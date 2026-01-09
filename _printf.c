@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * print_number - ədədləri simvol kimi çap edən köməkçi funksiya
- * @n: çap ediləcək ədəd
- * Return: çap edilən simvolların sayı
+ * print_number - prints an integer
+ * @n: integer to print
+ * Return: number of characters printed
  */
 int print_number(int n)
 {
@@ -12,7 +12,8 @@ int print_number(int n)
 
 	if (n < 0)
 	{
-		count += _putchar('-');
+		_putchar('-');
+		count++;
 		n1 = -n;
 	}
 	else
@@ -21,14 +22,15 @@ int print_number(int n)
 	if (n1 / 10)
 		count += print_number(n1 / 10);
 
-	count += _putchar((n1 % 10) + '0');
+	_putchar((n1 % 10) + '0');
+	count++;
+
 	return (count);
 }
 
 /**
  * _printf - produces output according to a format
- * @format: character string containing the directives
- *
+ * @format: character string
  * Return: the number of characters printed
  */
 int _printf(const char *format, ...)
@@ -41,7 +43,7 @@ int _printf(const char *format, ...)
 		return (-1);
 
 	va_start(args, format);
-	while (format && format[i])
+	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] == '%')
 		{
@@ -58,6 +60,8 @@ int _printf(const char *format, ...)
 			}
 			else if (format[i] == '%')
 				count += _putchar('%');
+			else if (format[i] == 'd' || format[i] == 'i')
+				count += print_number(va_arg(args, int));
 			else
 			{
 				count += _putchar('%');
@@ -66,7 +70,6 @@ int _printf(const char *format, ...)
 		}
 		else
 			count += _putchar(format[i]);
-		i++;
 	}
 	va_end(args);
 	return (count);
